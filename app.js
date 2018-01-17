@@ -40,22 +40,95 @@ process.on('uncaughtException', function (e) {
     logger.error(e);
 });
 
-    //config for your database
-    var config = ({
+//config for your database
+var sql=require('mssql')
+var config = ({
         user: 'bot-open-hack',
         password: 'P@ssw0rd',
         server: 'bot-open-hack.database.windows.net',   //這邊要注意一下!!
         database: 'bot-open-hack', //database名稱
         options: {
             encrypt: true // Use this if you're on Windows Azure
-        }
-    });
+        }});
+// HTTP POST
+app.post('/order', function (req, res) {
+    //console.log(getRandomStr(10));
+    var line_id = req.body.line_id,
+    content = req.body.content,
+    phone = req.body.phone;
+    InsertToDB(res, line_id, content, getRandomStr(), phone);
+});
+module.exports = app;
 
-config.connect(function(error){ // mysql
+app.get('/menu/:id',function(req,res){
+    //res.send('id: ' + req.params.id);
+    var id = req.params.id;
+    QueryToDB(id, res);
+});
+console.log('Server is running!');
+
+function QueryToDB(id, res) {
+    sql.connect(config,function (err) {
+        if(err) console.log(err);
+        //create Request object
+        var request = new sql.Request();
+        var QuerySQL = 'select NAME, PICTURE, CAL, PRICE from Detail_menu WHERE SEQ=@SEQ';
+        QuerySQL = QuerySQL.replace('@SEQ', id);
+        request.query(QuerySQL,
+        function(err, result){
+            if(err) console.log(err);
+            //send records as a response
+            //res.send(result);
+            res.writeHead( 200, { 'Content-Type' : 'application/json'});
+            var NAME = '"' + result.recordset[0].NAME.trim() + '"';
+            var PICTURE = '"' + result.recordset[0].PICTURE.trim() + '"';
+            var CAL = result.recordset[0].CAL;
+            var PRICE = result.recordset[0].PRICE;
+            var str = '{ "code": "200",    "message": "OK" , "data":  {"NAME": @NAME, "PICTURE": @PICTURE, "CAL": @CAL,"PRICE": @PRICE}}';
+            str = str.replace('@NAME', NAME).replace('@PICTURE',PICTURE).replace('@CAL',CAL).replace('@PRICE',PRICE);
+            var obj = JSON.parse(str);
+            res.end( str );
+        });
+    });
+}
+
+function InsertToDB(res, line_id, content, seq, phone) {         
+  sql.connect(config,function (err) {
+        if(err) console.log(err);
+        //create Request object
+        var request=new sql.Request();
+        var insertSQL = 'INSERT INTO Cus_menu (LINE_ID ,訂單成立時間, 訂單內容, 取餐序號, 手機號碼) VALUES (@line_id, Getdate(), @content, @seq, @phone);';
+        insertSQL = insertSQL.replace('@line_id', line_id).replace('@content', "'" + content + "'").replace('@seq', seq).replace('@phone',phone );
+        request.query(insertSQL,
+        function(err,recordset){
+            if(err) 
+            {
+                console.log(err);
+            }
+            else
+            {
+                res.writeHead( 200, { 'Content-Type' : 'application/json'});
+                var str = '{ "code": "200",    "message": "OK" }';
+                var obj = JSON.parse(str);
+                res.end( str );
+            }
+        });
+    });
+}
+    
+function getRandomStr() {
+    var randomStr = '';
+    for(var i = 0 ; i < 10 ; i++)
+    {
+        randomStr+=Math.floor(Math.random() * Math.floor(10));
+    }
+    return randomStr;
+}
+ /*config.connect(function(error){ // mysql
     if(!!error){
         console.log('Error');
         console.log(error);
     }else{
         console.log('Connected');
     }
-});
+});*/
