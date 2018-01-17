@@ -1,0 +1,15 @@
+{
+	"appenders": [
+		{
+			"type": "logLevelFilter",
+			"level": "debug",
+			"category": "bot-open-hack-master",
+			"appender":{
+				"type": "file",
+				"filename": "/logs/nodeCent.log",
+				"maxLogSize": 10485760,
+				"backups": 10
+			}
+		}
+	]
+}
