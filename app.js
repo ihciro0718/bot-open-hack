@@ -1,4 +1,13 @@
-console.info('app.js start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+// Application Log
+var log4js = require('log4js');
+var log4js_extend = require('log4js-extend');
+log4js_extend(log4js, {
+    path: __dirname,
+    format: '(@file:@line:@column)'
+});
+log4js.configure(__dirname + '/log4js.json');
+var logger = log4js.getLogger('nodeCent');
+logger.info('app.js start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 var express = require('express');
 var hashtable = require(__dirname + '/hashtable.js');
 
@@ -27,7 +36,8 @@ app.all('*', function (req, res, next) {
 app.use(express.static(__dirname + '/pages/tpe/channelwebs/assets'));
 
 process.on('uncaughtException', function (e) {
-    console.error(e);
+    logger.info('process.on==============================================================');
+    logger.error(e);
 });
 
 //config for your database
@@ -43,9 +53,9 @@ var config = ({
 // HTTP POST
 app.post('/order', function (req, res) {
     //console.log(getRandomStr(10));
-    var line_id = req.body.line_id,
-    content = req.body.content,
-    phone = req.body.phone;
+    var line_id = "'" + req.body.line_id + "'",
+    content = "'" + req.body.content + "'",
+    phone = "'" + req.body.phone + "'";
     InsertToDB(res, line_id, content, getRandomStr(), phone);
 });
 module.exports = app;
@@ -88,7 +98,7 @@ function InsertToDB(res, line_id, content, seq, phone) {
         //create Request object
         var request=new sql.Request();
         var insertSQL = 'INSERT INTO Cus_menu (LINE_ID ,訂單成立時間, 訂單內容, 取餐序號, 手機號碼) VALUES (@line_id, Getdate(), @content, @seq, @phone);';
-        insertSQL = insertSQL.replace('@line_id', line_id).replace('@content', "'" + content + "'").replace('@seq', seq).replace('@phone',phone );
+        insertSQL = insertSQL.replace('@line_id', line_id).replace('@content',  content ).replace('@seq', seq).replace('@phone',phone );
         request.query(insertSQL,
         function(err,recordset){
             if(err) 
