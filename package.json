@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "log4js": "^1.1.1",
-    "log4js-extend": "^0.1.2",
+    "log4js": "latest",
+    "log4js-extend": "latest",
     "body-parser": "latest",
     "express": "^4.16.2",
     "graceful-fs": "latest",
