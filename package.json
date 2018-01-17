@@ -1,4 +1,21 @@
 {
-  "name": "",
-  "version": ""
+  "name": "bot-open-hack-master",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "log4js": "^1.1.1",
+    "log4js-extend": "^0.1.2",
+    "body-parser": "latest",
+    "express": "^4.16.2",
+    "graceful-fs": "latest",
+    "querystring": "latest",
+    "mssql": "latest",
+    "util": "latest"
+  }
 }
