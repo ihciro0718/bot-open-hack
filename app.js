@@ -114,8 +114,8 @@ function getRandomStr() {
     return randomStr;
 }
 app.get('/cusmenu',function(req,res){ //主頁
-    res.send("Hello world");
-    /*
+    //res.send("Hello world");
+    
     request.header("Content-Type", 'text/html');
     var fs = require('fs');
     fs.readFile(__dirname + '/cusmenu.html', 'utf8', function (err, data) {
@@ -125,7 +125,7 @@ app.get('/cusmenu',function(req,res){ //主頁
             return;
         }
         this.res.send(data);
-    }.bind({ req: request, res: response }));*/
+    }.bind({ req: request, res: response }));
 });
 
 app.get('/search/:num',function(req,res){
