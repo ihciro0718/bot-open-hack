@@ -117,7 +117,9 @@ app.get('/Main',function(req,res){ //主頁
     request.header("Content-Type", 'text/html');
     fs.readFile(__dirname + '/Main.html', 'utf8', function (err, data) {
         if (err) {
-            res.send(err);
+            console.log(err);
+            this.res.send(err);
+            return;
         }
         this.res.send(data);
     }.bind({ req: request, res: response }));
