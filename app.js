@@ -124,7 +124,7 @@ app.get('/cusmenu',function(req,res){ //主頁
             return;
         }
         this.res.send(data);
-    }); //.bind({ req: request, res: response })
+    }.bind({ req: req, res: res })); 
 });
 
 app.get('/search/:num',function(req,res){
