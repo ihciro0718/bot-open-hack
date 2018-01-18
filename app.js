@@ -113,9 +113,9 @@ function getRandomStr() {
     }
     return randomStr;
 }
-app.get('/Main',function(req,res){ //主頁
+app.get('/index',function(req,res){ //主頁
     request.header("Content-Type", 'text/html');
-    fs.readFile(__dirname + '/Main.html', 'utf8', function (err, data) {
+    fs.readFile(__dirname + '/index.html', 'utf8', function (err, data) {
         if (err) {
             console.log(err);
             this.res.send(err);
