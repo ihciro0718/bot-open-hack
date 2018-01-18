@@ -115,8 +115,7 @@ function getRandomStr() {
 }
 app.get('/cusmenu',function(req,res){ //主頁
     //res.send("Hello world");
-    
-    request.header("Content-Type", 'text/html');
+    req.header("Content-Type", 'text/html');
     var fs = require('fs');
     fs.readFile(__dirname + '/cusmenu.html', 'utf8', function (err, data) {
         if (err) {
