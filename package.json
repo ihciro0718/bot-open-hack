@@ -13,6 +13,7 @@
     "log4js-extend": "latest",
     "body-parser": "latest",
     "express": "^4.16.2",
+    "fs": "latest",
     "graceful-fs": "latest",
     "querystring": "latest",
     "mssql": "latest",
