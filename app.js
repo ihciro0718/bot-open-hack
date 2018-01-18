@@ -113,7 +113,7 @@ function getRandomStr() {
     }
     return randomStr;
 }
-app.get('/index',function(req,res){ //主頁
+app.get('/cusmenu',function(req,res){ //主頁
     request.header("Content-Type", 'text/html');
     fs.readFile(__dirname + '/index.html', 'utf8', function (err, data) {
         if (err) {
