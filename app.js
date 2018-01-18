@@ -60,6 +60,7 @@ app.get('/menu/:id',function(req,res){
 console.log('Server is running!');
 
 function QueryToDB(id, res) {
+    pool.connect(function(err){
         //create Request object
         var request = new sql.Request(pool);
         var QuerySQL = 'select NAME, PICTURE, CAL, PRICE from Detail_menu WHERE SEQ=@SEQ';
@@ -79,9 +80,11 @@ function QueryToDB(id, res) {
             var obj = JSON.parse(str);
             res.end( str );
         });
+    });
 }
 
-function InsertToDB(res, line_id, content, seq, phone) {         
+function InsertToDB(res, line_id, content, seq, phone) {
+    pool.connect(function(err){         
     var request = new sql.Request(pool);
         var insertSQL = 'INSERT INTO Cus_menu (LINE_ID ,訂單成立時間, 訂單內容, 取餐序號, 手機號碼) VALUES (@line_id, Getdate(), @content, @seq, @phone);';
         insertSQL = insertSQL.replace('@line_id', line_id).replace('@content',  content ).replace('@seq', seq).replace('@phone',phone );
@@ -99,6 +102,7 @@ function InsertToDB(res, line_id, content, seq, phone) {
                 res.end( str );
             }
         });
+    });
 }
     
 function getRandomStr() {
