@@ -1,13 +1,4 @@
-// Application Log
-var log4js = require('log4js');
-var log4js_extend = require('log4js-extend');
-log4js_extend(log4js, {
-    path: __dirname,
-    format: '(@file:@line:@column)'
-});
-log4js.configure(__dirname + '/log4js.json');
-var logger = log4js.getLogger('nodeCent');
-logger.info('app.js start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+console.info('app.js start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 var express = require('express');
 var hashtable = require(__dirname + '/hashtable.js');
 
@@ -36,8 +27,8 @@ app.all('*', function (req, res, next) {
 app.use(express.static(__dirname + '/pages/tpe/channelwebs/assets'));
 
 process.on('uncaughtException', function (e) {
-    logger.info('process.on==============================================================');
-    logger.error(e);
+    console.info('process.on==============================================================');
+    console.error(e);
 });
 
 //config for your database
