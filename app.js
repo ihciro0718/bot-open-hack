@@ -113,6 +113,47 @@ function getRandomStr() {
     }
     return randomStr;
 }
+app.get('/Main',function(req,res){
+    request.header("Content-Type", 'text/html');
+    fs.readFile(__dirname + '/Main.html', 'utf8', function (err, data) {
+        if (err) {
+            res.send(err);
+        }
+        this.res.send(data);
+    }.bind({ req: request, res: response }));
+});
+
+app.get('/search/:num',function(req,res){
+    //res.send('id: ' + req.params.id);
+    var num = req.params.num;
+    FindDB(num, res);
+});
+
+function FindDB(id, res) {
+    pool.connect(function(err){
+        //create Request object
+        var request = new sql.Request(pool);
+        var QuerySQL = 'select * from Cus_menu WHERE (cum_num = ' +id+')';
+        //QuerySQL = QuerySQL.replace('@SEQ', id);
+        request.query(QuerySQL, function(err, result){
+            if(err) console.log(err);
+            //send records as a response
+            //res.send(result);
+            /*
+            res.writeHead( 200, { 'Content-Type' : 'application/json'});
+            var NAME = '"' + result.recordset[0].NAME.trim() + '"';
+            var PICTURE = '"' + result.recordset[0].PICTURE.trim() + '"';
+            var CAL = result.recordset[0].CAL;
+            var PRICE = result.recordset[0].PRICE;
+            var str = '{ "code": "200",    "message": "OK" , "data":  {"NAME": @NAME, "PICTURE": @PICTURE, "CAL": @CAL,"PRICE": @PRICE}}';
+            str = str.replace('@NAME', NAME).replace('@PICTURE',PICTURE).replace('@CAL',CAL).replace('@PRICE',PRICE);
+            var obj = JSON.parse(str);
+            res.end( str );
+            */
+            res.send(result);
+        });
+    });
+}
  /*config.connect(function(error){ // mysql
     if(!!error){
         console.log('Error');
